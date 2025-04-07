@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+        git:
+          uri: https://github.com/marselMadanbekov/cloud-config.git
+          search-paths: licensingservice
+server:
+  port: 8071
+
+encrypt:
+  key: secretKey
