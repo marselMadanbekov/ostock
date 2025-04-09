@@ -6,3 +6,8 @@ spring:
       uri: http://configserver:8071
   config:
     import: "configserver:"
+logging:
+  level:
+    com.netflix: WARN
+    org.springframework: WARN
+    com.ogrowth: DEBUG
