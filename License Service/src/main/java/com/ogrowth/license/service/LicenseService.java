@@ -4,6 +4,7 @@ import com.ogrowth.license.config.ServiceConfig;
 import com.ogrowth.license.model.License;
 import com.ogrowth.license.model.Organization;
 import com.ogrowth.license.repository.LicenseRepository;
+import com.ogrowth.license.service.client.OrganizationRestTemplateClient;
 import com.ogrowth.license.utils.UserContextHolder;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -30,6 +31,7 @@ public class LicenseService {
     private final LicenseRepository licenseRepository;
 
     private final ServiceConfig config;
+    private final OrganizationRestTemplateClient organizationRestClient;
 
 
     public License getLicense(String licenseId, String organizationId,
@@ -85,6 +87,7 @@ public class LicenseService {
 
     private Organization retrieveOrganizationInfo(String organizationId, String clientType) {
         Organization organization = null;
+        organization = organizationRestClient.getOrganization(organizationId);
         return organization;
     }
 
