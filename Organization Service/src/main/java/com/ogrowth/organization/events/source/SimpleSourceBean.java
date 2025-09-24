@@ -19,7 +19,7 @@ public class SimpleSourceBean {
     }
 
     public void publishOrganizationChange(String action, String organizationId) {
-        log.debug("Sending Kafka message {} for OrganizationId: {}", action, organizationId);
+        log.info("Sending Kafka message {} for OrganizationId: {}", action, organizationId);
         OrganizationChangeModel change = new OrganizationChangeModel(
                 OrganizationChangeModel.class.getTypeName(),
                 action,

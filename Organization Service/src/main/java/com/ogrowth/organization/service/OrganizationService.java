@@ -25,6 +25,7 @@ public class OrganizationService {
     }
 
     public Organization create(Organization organization) {
+        log.info("Creating organization {}", organization.getId());
         organization.setId(UUID.randomUUID().toString());
         organization = repository.save(organization);
         simpleSourceBean.publishOrganizationChange(

@@ -1,36 +1,33 @@
-CREATE TABLE IF NOT EXISTS public.organizations
-(
-    organization_id text COLLATE pg_catalog."default" NOT NULL,
-    name text COLLATE pg_catalog."default",
-    contact_name text COLLATE pg_catalog."default",
-    contact_email text COLLATE pg_catalog."default",
-    contact_phone text COLLATE pg_catalog."default",
-    CONSTRAINT organizations_pkey PRIMARY KEY (organization_id)
-)
+-- создаём базу и пользователя
+CREATE DATABASE keycloak;
+CREATE USER keycloak WITH PASSWORD 'keycloak';
 
-TABLESPACE pg_default;
+-- назначаем владельцем базы keycloak
+ALTER DATABASE keycloak OWNER TO keycloak;
 
-ALTER TABLE public.organizations
-    OWNER to postgres;
+-- даём пользователю полный доступ к схеме public этой базы
+\connect keycloak;
+GRANT ALL PRIVILEGES ON SCHEMA public TO keycloak;
 
+-- теперь создаём таблицы для ostock_dev
+\connect ostock_dev;
 
-CREATE TABLE IF NOT EXISTS public.licenses
-(
-    license_id text COLLATE pg_catalog."default" NOT NULL,
-    organization_id text COLLATE pg_catalog."default" NOT NULL,
-    description text COLLATE pg_catalog."default",
-    product_name text COLLATE pg_catalog."default" NOT NULL,
-    license_type text COLLATE pg_catalog."default" NOT NULL,
-    comment text COLLATE pg_catalog."default",
-    CONSTRAINT licenses_pkey PRIMARY KEY (license_id),
-    CONSTRAINT licenses_organization_id_fkey FOREIGN KEY (organization_id)
-        REFERENCES public.organizations (organization_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID
-)
+CREATE TABLE IF NOT EXISTS public.organizations (
+    organization_id text PRIMARY KEY,
+    name text,
+    contact_name text,
+    contact_email text,
+    contact_phone text
+);
 
-TABLESPACE pg_default;
+CREATE TABLE IF NOT EXISTS public.licenses (
+    license_id text PRIMARY KEY,
+    organization_id text NOT NULL REFERENCES public.organizations (organization_id),
+    description text,
+    product_name text NOT NULL,
+    license_type text NOT NULL,
+    comment text
+);
 
-ALTER TABLE public.licenses
-    OWNER to postgres;
+ALTER TABLE public.organizations OWNER TO postgres;
+ALTER TABLE public.licenses OWNER TO postgres;
