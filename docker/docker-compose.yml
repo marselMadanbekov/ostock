@@ -24,7 +24,7 @@ services:
       backend:
         aliases:
           - "kafka"
-  redisserver:
+  redis:
     image: redis:alpine
     ports:
       - 6379:6379
@@ -105,7 +105,7 @@ services:
       - "8070:8070"
     networks:
       - backend
-  gatewayserver:
+  gateway-server:
     image: ostock/gatewayserver:0.0.1-SNAPSHOT
     environment:
       PROFILE: "dev"
